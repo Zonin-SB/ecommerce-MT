@@ -1,12 +1,40 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useFormik } from 'formik';
+import {signupSchema} from '../../validation/validation'
+import {userSignup} from '../../axios/services/userServices'
 import FormComponent from "../FormComponent/FormComponent";
 
+const initialValues = {
+  name: '',
+  email: '',
+  password: '',
+  confirmPassword: '',
+};
 function Signup() {
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
+
+  const onSubmit = async (values, action) => {
+    const response = await userSignup(values);
+    console.log(response);
+    if (response.status === 'error') {
+      setError('This email already exists,try another one.');
+    } else if (response.status === 'success') {
+      navigate('/login');
+    }
+  };
+
+  const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
+  useFormik({
+    initialValues: initialValues,
+    validationSchema: signupSchema,
+    onSubmit,
+  });
   return (
     <div>
       <FormComponent>
-        <form>
+        <form onSubmit={handleSubmit}>
           <div>
             <span>
               <h2 className="text-center pb-2">Create Account</h2>
@@ -16,45 +44,73 @@ function Signup() {
             <input
               type="text"
               className="form-control item"
-              id="username"
+              id="name"
+              name="name"
+              value={values.name}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
               placeholder="Username"
             />
+             {errors.name && touched.name && (
+                      <p style={{ color: 'red' }}>{errors.name}</p>
+                    )}
+          </div>
+          <div className="form-group">
+            <input
+              type="email"
+              className="form-control item"
+              id="email"
+              name="email"
+              value={values.email}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              placeholder="Email"
+            />
+            {errors.email && touched.email && (
+                      <p style={{ color: 'red' }}>{errors.email}</p>
+                    )}
           </div>
           <div className="form-group">
             <input
               type="password"
               className="form-control item"
               id="password"
+              value={values.password}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              name="password"
               placeholder="Password"
             />
+           {errors.password && touched.password && (
+                      <p style={{ color: 'red' }}>{errors.password}</p>
+                    )}
           </div>
+          
           <div className="form-group">
             <input
-              type="text"
+              type="password"
               className="form-control item"
-              id="email"
-              placeholder="Email"
+              id="confirmPassword"
+              name="confirmPassword"
+              value={values.confirmPassword}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              placeholder="Confirm Password"
             />
+             {errors.confirmPassword && touched.confirmPassword && (
+                      <p style={{ color: 'red' }}>{errors.confirmPassword}</p>
+                    )}
           </div>
-          <div className="form-group">
-            <input
-              type="text"
-              className="form-control item"
-              id="phone-number"
-              placeholder="Phone Number"
-            />
-          </div>
-          <div className="form-group">
-            <input
-              type="text"
-              className="form-control item"
-              id="birth-date"
-              placeholder="Birth Date"
-            />
-          </div>
+          {error ? (
+                      <p style={{ color: 'red' }} className="text-center">
+                        {error}
+                      </p>
+                    ) : (
+                      ''
+                    )}
           <div className="form-group">
             <div class="d-grid gap-2 col-6 mx-auto">
-              <button type="button" className="btn btn-block create-account">
+              <button type="submit" className="btn btn-block create-account">
                 Signup
               </button>
             </div>

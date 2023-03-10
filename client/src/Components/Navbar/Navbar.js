@@ -10,9 +10,9 @@ function Navbar() {
     <div className="p-2">
       <nav className="navbar navbar-expand-lg navbar-light bg-white ">
         <div className="container-fluid">
-          <p className="navbar-brand font-weight-bold" href="#">
+         <Link to={'/'}><p className="navbar-brand font-weight-bold">
             logoipsum
-          </p>
+          </p></Link> 
           <button
             className="navbar-toggler"
             type="button"

@@ -1,9 +1,10 @@
 import React from "react";
-import { Login } from "../Components";
+import { Login, Navbar } from "../Components";
 
 function LoginPage() {
   return (
     <div>
+      <Navbar/>
       <Login />
     </div>
   );

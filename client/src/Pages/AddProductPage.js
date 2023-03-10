@@ -1,9 +1,10 @@
 import React from "react";
-import { AddProduct } from "../Components";
+import { AddProduct, Navbar } from "../Components";
 
 function AddProductPage() {
   return (
     <div>
+      <Navbar/>
       <AddProduct />
     </div>
   );

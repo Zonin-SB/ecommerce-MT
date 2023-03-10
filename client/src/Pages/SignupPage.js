@@ -1,9 +1,10 @@
 import React from "react";
-import { Signup } from "../Components";
+import { Navbar, Signup } from "../Components";
 
 function SignupPage() {
   return (
     <div>
+      <Navbar/>
       <Signup />
     </div>
   );

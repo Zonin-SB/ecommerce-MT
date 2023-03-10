@@ -1,59 +1,135 @@
-import React from "react";
+import React, { useState } from "react";
+import { addProductSchema } from "../../validation/validation";
+import { addProduct } from "../../axios/services/userServices";
+import { useFormik } from "formik";
 import FormComponent from "../FormComponent/FormComponent";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import Swal from 'sweetalert2';
 
+const initialValues = {
+  name: "",
+  price: "",
+};
 function AddProduct() {
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
+  const [selectedFile, setSelectedFile] = useState(null);
+
+  const onFileChange = (event) => {
+    setSelectedFile(event.target.files[0]);
+  };
+  // console.log(selectedFile);
+  const onSubmit = async (values,{ resetForm }) => {
+    try {
+      let value = {};
+      const formData = new FormData();
+      formData.append("file", selectedFile);
+      formData.append("upload_preset", "care4pets");
+      console.log(formData, "formdata");
+
+      const up = await axios.post(
+        "https://api.cloudinary.com/v1_1/dtfvivsz5/image/upload/",
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
+      const imagedata = up.data.url;
+      value.name = values.name;
+      value.price = values.price;
+      value.imageUrl = imagedata;
+      const response = await addProduct(value);
+      if (response.status === "error") {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Something went wrong!',
+        });
+        setError("Action Failed,Please try again after some time.");
+      } else if (response.status === "ok") {
+        resetForm();
+        setSelectedFile(null)
+        Swal.fire({
+          icon: 'success',
+          title: 'New plan has been added',
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        
+        navigate("/addProduct");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
+    useFormik({
+      initialValues,
+      validationSchema: addProductSchema,
+      onSubmit,
+    });
+  // console.log(values,'form val');
   return (
     <div>
       <FormComponent>
-        <form>
+        <form onSubmit={handleSubmit}>
           <div>
             <span>
               <h2 className="text-center pb-2">Add Product</h2>
             </span>
           </div>
+          {error ? (
+            <p style={{ color: "red" }} className="text-center">
+              {error}
+            </p>
+          ) : (
+            ""
+          )}
           <div className="form-group">
             <input
               type="text"
               className="form-control item"
-              id="username"
+              id="name"
+              name="name"
+              value={values.name}
+              onChange={handleChange}
+              onBlur={handleBlur}
               placeholder="Product name"
             />
+            {errors.name && touched.name && (
+              <p style={{ color: "red" }}>{errors.name}</p>
+            )}
           </div>
           <div className="form-group">
             <input
-              type="text"
+              type="tel"
               className="form-control item"
-              id="password"
-              placeholder="Password"
+              id="price"
+              name="price"
+              value={values.price}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              placeholder="Price"
             />
+            {errors.price && touched.price && (
+              <p style={{ color: "red" }}>{errors.price}</p>
+            )}
           </div>
           <div className="form-group">
             <input
-              type="text"
+              type="file"
+              onChange={onFileChange}
               className="form-control item"
-              id="email"
-              placeholder="Email"
+              id="image"
+              
             />
           </div>
-          <div className="form-group">
-            <input
-              type="text"
-              className="form-control item"
-              id="phone-number"
-              placeholder="Phone Number"
-            />
-          </div>
-          <div className="form-group">
-            <input
-              type="text"
-              className="form-control item"
-              id="birth-date"
-              placeholder="Birth Date"
-            />
-          </div>
+
           <div className="form-group">
             <div class="d-grid gap-2 col-6 mx-auto">
-              <button type="button" className="btn btn-block create-account">
+              <button type="submit" className="btn btn-block create-account">
                 Add Product
               </button>
             </div>
