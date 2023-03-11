@@ -96,6 +96,47 @@ const userSignup = (req, res) => {
         console.log(err);
       });
   };
+  const getCartProducts = (req, res) => {
+    const userId=req.user._id
+    userUtilities
+      .getCartProducts(userId)
+      .then((details) => {
+        res.json({ status: 'ok', cartProducts: details });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const addCartCount=(req,res)=>{
+    const proId=req.params.id
+    const userId=req.user._id
+    userUtilities.addCartCount(proId,userId).then((details)=>{
+      res.json({ status: 'ok', cartProducts: details });
+    }).catch((err)=>{
+      res.json({ status: 'error', message: err });
+    })
+  }
+
+  const decrementCartCount=(req,res)=>{
+    const proId=req.params.id
+    const userId=req.user._id
+    userUtilities.decrementCartCount(proId,userId).then((details)=>{
+      res.json({ status: 'ok', cartProducts: details });
+    }).catch((err)=>{
+      res.json({ status: 'error', message: err });
+    })
+  }
+
+  const removeProduct=(req,res)=>{
+    const proId=req.params.id
+    const userId=req.user._id
+    userUtilities.removeProduct(proId,userId).then((details)=>{
+      res.json({ status: 'ok', cartProducts: details });
+    }).catch((err)=>{
+      res.json({ status: 'error', message: err });
+    })
+  }
   module.exports={
     userSignup,
     userLogin,
@@ -104,4 +145,8 @@ const userSignup = (req, res) => {
     addToCart,
     getCart,
     removeCart,
+    getCartProducts,
+    addCartCount,
+    decrementCartCount,
+    removeProduct,
   }

@@ -10,7 +10,6 @@ function HomeComponent2() {
   const [cartProducts,setCartProducts]=useState([])
   const navigate=useNavigate();
   const dispatch=useDispatch();
-  const [error,setError]=useState('')
 
   useEffect(() => {
    fetchProduct()
@@ -32,7 +31,7 @@ function HomeComponent2() {
     }
    
    }
-   const cartLength= cartProducts.length
+   const cartLength= cartProducts?.length
       dispatch(cartCount(cartLength))
   
   

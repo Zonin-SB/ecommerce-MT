@@ -6,36 +6,43 @@ import { BsSearch } from "react-icons/bs";
 import { AiOutlineLogout } from "react-icons/ai";
 import "./Navbar.css";
 import { Link, useNavigate } from "react-router-dom";
-import { useSelector,useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from "react-redux";
 import { cartCount, userLoginDetails } from "../../redux/userReducer";
-import Swal from 'sweetalert2';
-
+import Swal from "sweetalert2";
 
 function Navbar() {
-  const navigate=useNavigate();
-  const dispatch=useDispatch();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const user = useSelector((state) => state.user.userDetails);
   const count = useSelector((state) => state.user.cart);
 
-console.log(count,'count');
+  const cartView=()=>{
+    const token=localStorage.getItem('userToken')
+    if(token){
+      navigate('/cart')
+    }else{
+      navigate('/login')
+    }
+  }
+
   const logout = () => {
     Swal.fire({
-      title: 'Are you sure?',
-      text: 'You want to Logout!',
-      icon: 'warning',
+      title: "Are you sure?",
+      text: "You want to Logout!",
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes!',
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes!",
     }).then((result) => {
       if (result.isConfirmed) {
-        localStorage.removeItem('userToken');
+        localStorage.removeItem("userToken");
 
-    dispatch(userLoginDetails(null));
-    dispatch(cartCount(null))
-    navigate('/');
-    window.location.reload()
-        Swal.fire('Logged out!', 'You have been logged out', 'success');
+        dispatch(userLoginDetails(null));
+        dispatch(cartCount(null));
+        navigate("/");
+        window.location.reload();
+        Swal.fire("Logged out!", "You have been logged out", "success");
       }
     });
   };
@@ -43,9 +50,9 @@ console.log(count,'count');
     <div className="p-2">
       <nav className="navbar navbar-expand-lg navbar-light bg-white ">
         <div className="container-fluid">
-         <Link to={'/'}><p className="navbar-brand font-weight-bold">
-            logoipsum
-          </p></Link> 
+          <Link to={"/"}>
+            <p className="navbar-brand font-weight-bold">logoipsum</p>
+          </Link>
           <button
             className="navbar-toggler"
             type="button"
@@ -108,19 +115,29 @@ console.log(count,'count');
               <AiOutlineHeart size={24} />
             </div>
 
-            <div className="p-2">
-              <BsBasket size={24} />
-              {count>0?"":""}
+           <div className="p-2">
+              <BsBasket size={24} style={{ color: "black" }} onClick={()=>cartView()} className="icon-pointer"/>
+              {count > 0 && (
+                <span class="start-100 translate-middle badge rounded-pill bg-danger">
+                  {count}
+                </span>
+              )}
             </div>
 
             <div className="p-2">
-              {user==null?
-              <Link to={"/login"} className="link text-decoration-none">
-                <FaUserCircle size={24} style={{ color: "black" }} />
-              </Link>
-             
-                : <Link><AiOutlineLogout size={24} style={{ color: "black" }} onClick={logout} /></Link>
-             }
+              {user == null ? (
+                <Link to={"/login"} className="link text-decoration-none">
+                  <FaUserCircle size={24} style={{ color: "black" }} />
+                </Link>
+              ) : (
+                <Link>
+                  <AiOutlineLogout
+                    size={24}
+                    style={{ color: "black" }}
+                    onClick={logout}
+                  />
+                </Link>
+              )}
             </div>
 
             <div className="d-grid gap-2 d-md-flex justify-content-md-end p-3">

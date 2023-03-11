@@ -37,7 +37,6 @@ export const userLogin = async (values) => {
 };
 
 export const addProduct = async (values) => {
-    console.log(values,'in ax');
     try {
         const config = {
             headers: {
@@ -126,7 +125,85 @@ export const addProduct = async (values) => {
       const { data } = await axiosUserInstance.get('/getCart', config);
     
       if (data.status) {
-        console.log(data,'in ax data');
+        return data;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  export const getCartProducts=async(token)=>{
+    try {
+      const config = {
+        headers: {
+          Accept: 'application/json',
+          Authorization: 'Bearer ' + token,
+          'Content-Type': 'application/json',
+        },
+      };
+      const { data } = await axiosUserInstance.get('/getCartProducts', config);
+    
+      if (data.status) {
+        return data;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  export const addCartCount=async(token,id)=>{
+    try {
+      const config = {
+        headers: {
+          Accept: 'application/json',
+          Authorization: 'Bearer ' + token,
+          'Content-Type': 'application/json',
+        },
+      };
+      const { data } = await axiosUserInstance.get(`/addCartCount/${id}`, config);
+    
+      if (data.status) {
+    
+        return data;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  export const decrementCartCount=async(token,id)=>{
+    try {
+      const config = {
+        headers: {
+          Accept: 'application/json',
+          Authorization: 'Bearer ' + token,
+          'Content-Type': 'application/json',
+        },
+      };
+      const { data } = await axiosUserInstance.get(`/decrementCartCount/${id}`, config);
+    
+      if (data.status) {
+    
+        return data;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  export const removeProduct=async(token,id)=>{
+    try {
+      const config = {
+        headers: {
+          Accept: 'application/json',
+          Authorization: 'Bearer ' + token,
+          'Content-Type': 'application/json',
+        },
+      };
+      const { data } = await axiosUserInstance.get(`/removeProduct/${id}`, config);
+    
+      if (data.status) {
+    
         return data;
       }
     } catch (error) {
