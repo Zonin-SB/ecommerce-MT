@@ -74,3 +74,62 @@ export const addProduct = async (values) => {
     }
   
   };
+
+  export const addToCart=async(token,id)=>{
+    try {
+      const config = {
+        headers: {
+          Accept: 'application/json',
+          Authorization: 'Bearer ' + token,
+          'Content-Type': 'application/json',
+        },
+      };
+      const { data } = await axiosUserInstance.get(`/addToCart/${id}`, config);
+    
+      if (data.status) {
+    
+        return data;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  export const removeFromCart=async(token,id)=>{
+    try {
+      const config = {
+        headers: {
+          Accept: 'application/json',
+          Authorization: 'Bearer ' + token,
+          'Content-Type': 'application/json',
+        },
+      };
+      const { data } = await axiosUserInstance.get(`/removeCart/${id}`, config);
+    
+      if (data.status) {
+    
+        return data;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  export const getCart=async(token)=>{
+    try {
+      const config = {
+        headers: {
+          Accept: 'application/json',
+          Authorization: 'Bearer ' + token,
+          'Content-Type': 'application/json',
+        },
+      };
+      const { data } = await axiosUserInstance.get('/getCart', config);
+    
+      if (data.status) {
+        console.log(data,'in ax data');
+        return data;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }

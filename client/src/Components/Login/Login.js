@@ -5,6 +5,9 @@ import jwt from 'jwt-decode';
 import {loginSchema} from '../../validation/validation'
 import {userLogin} from '../../axios/services/userServices'
 import FormComponent from "../FormComponent/FormComponent";
+import { useDispatch } from 'react-redux';
+import {userLoginDetails} from '../../redux/userReducer'
+
 
 const initialValues = {
   email: '',
@@ -13,13 +16,14 @@ const initialValues = {
 function Login() {
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const onSubmit = async (values, action) => {
     const response = await userLogin(values);
 
     if (response.user) {
-      // localStorage.setItem('userToken', response.user);
-      // const user = jwt(response.user);
+      localStorage.setItem('userToken', response.user);
+      dispatch(userLoginDetails(response.user));
       navigate('/');
     } else {
       setError('Incorrect email or password');

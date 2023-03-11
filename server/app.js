@@ -4,13 +4,14 @@ const cors = require('cors');
 const db = require('./config/connection');
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
-
+const { errorHandler } = require('./middlewares/error');
 dotenv.config();
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use(errorHandler);
 
 
 const userRouter=require('./routes/user')

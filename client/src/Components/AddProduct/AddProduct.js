@@ -10,6 +10,7 @@ import Swal from 'sweetalert2';
 const initialValues = {
   name: "",
   price: "",
+  stock:''
 };
 function AddProduct() {
   const [error, setError] = useState("");
@@ -38,6 +39,7 @@ function AddProduct() {
       const imagedata = up.data.url;
       value.name = values.name;
       value.price = values.price;
+      value.stock=values.stock
       value.imageUrl = imagedata;
       const response = await addProduct(value);
       if (response.status === "error") {
@@ -119,10 +121,26 @@ function AddProduct() {
           </div>
           <div className="form-group">
             <input
+              type="num"
+              className="form-control item"
+              id="stock"
+              name="stock"
+              value={values.stock}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              placeholder="Stock"
+            />
+            {errors.stock && touched.stock && (
+              <p style={{ color: "red" }}>{errors.stock}</p>
+            )}
+          </div>
+          <div className="form-group">
+            <input
               type="file"
               onChange={onFileChange}
               className="form-control item"
               id="image"
+              required
               
             />
           </div>

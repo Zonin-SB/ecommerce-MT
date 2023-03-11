@@ -1,6 +1,7 @@
 const bcrypt = require("bcrypt");
 const collection = require("../config/collection");
 const db = require("../config/connection");
+const { ObjectId } = require("mongodb");
 
 module.exports = {
   doUserSignup: (data) => {
@@ -89,6 +90,160 @@ module.exports = {
       } catch (error) {
         console.log(error);
       }
+    });
+  },
+
+  findUserById: (userId) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const user = await db
+          .get()
+          .collection(collection.USER_COLLECTION)
+          .findOne({ _id: ObjectId(userId) });
+
+        resolve(user);
+      } catch (error) {
+        reject();
+      }
+    });
+  },
+
+  addToCart: (proId, userId) => {
+    let proObj = {
+      item: ObjectId(proId),
+      quantity: 1,
+    };
+
+    return new Promise(async (resolve, reject) => {
+      try {
+        let userCart = await db
+          .get()
+          .collection(collection.CART_COLLECTION)
+          .findOne({ user: userId });
+
+        if (userCart) {
+          db.get()
+            .collection(collection.CART_COLLECTION)
+            .updateOne(
+              { user: userId },
+              {
+                $push: { products: proObj },
+              }
+            )
+            .then(async () => {
+              await db
+                .get()
+                .collection(collection.PRODUCT_COLLECTION)
+                .updateOne({ _id: ObjectId(proId) }, { $inc: { stock: -1 } })
+                .then(async () => {
+                  const products = await db
+                    .get()
+                    .collection(collection.PRODUCT_COLLECTION)
+                    .find()
+                    .toArray();
+
+                  resolve(products);
+                });
+            });
+
+          // resolve();
+        } else {
+          let cartObj = {
+            user: userId,
+            products: [proObj],
+          };
+          db.get()
+            .collection(collection.CART_COLLECTION)
+            .insertOne(cartObj)
+            .then(async (response) => {
+              await db
+                .get()
+                .collection(collection.PRODUCT_COLLECTION)
+                .updateOne({ _id: ObjectId(proId) }, { $inc: { stock: -1 } })
+                .then(async () => {
+                  const products = await db
+                    .get()
+                    .collection(collection.PRODUCT_COLLECTION)
+                    .find()
+                    .toArray();
+
+                  resolve(products);
+                });
+            });
+        }
+      } catch (error) {
+        reject(error);
+      }
+    });
+  },
+
+  getCart: (userId) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const cartProducts = await db
+          .get()
+          .collection(collection.CART_COLLECTION)
+          .find({ user: userId })
+          .toArray();
+        resolve(cartProducts);
+      } catch (error) {
+        console.log(error);
+      }
+    });
+  },
+
+  removeCart: (proId, userId) => {
+    return new Promise(async (resolve, reject) => {
+      const product = await db
+        .get()
+        .collection(collection.CART_COLLECTION)
+        .aggregate([
+          {
+            $match: {
+              user: userId,
+            },
+          },
+          {
+            $unwind: "$products",
+          },
+
+          {
+            $match: {
+              "products.item": ObjectId(proId),
+            },
+          },
+          {
+            $project: {
+              products: 1,
+            },
+          },
+        ])
+        .toArray();
+      const quantity = product[0].products.quantity;
+
+      db.get()
+        .collection(collection.CART_COLLECTION)
+        .updateOne(
+          { user: userId },
+          {
+            $pull: { products: { item: ObjectId(proId) } },
+          }
+        )
+        .then(async () => {
+          await db
+            .get()
+            .collection(collection.PRODUCT_COLLECTION)
+            .updateOne({ _id: ObjectId(proId) }, { $inc: { stock: quantity } });
+        })
+        .then(async () => {
+          const data = await db
+            .get()
+            .collection(collection.PRODUCT_COLLECTION)
+            .find()
+            .toArray();
+
+          resolve(data);
+        });
     });
   },
 };

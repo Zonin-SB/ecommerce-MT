@@ -39,8 +39,11 @@ const userSignup = (req, res) => {
   };
 
   const addProduct = (req, res) => {
+    const data=req.body
+    data.stock=parseInt(data.stock)
+   
     userUtilities
-      .addProduct(req.body)
+      .addProduct(data)
       .then(() => {
         res.json({ status: 'ok' });
       })
@@ -60,9 +63,45 @@ const userSignup = (req, res) => {
         console.log(err);
       });
   };
+
+  const addToCart=(req,res)=>{
+    const proId=req.params.id
+    const userId=req.user._id
+    userUtilities.addToCart(proId,userId).then((details)=>{
+      res.json({ status: 'ok', products: details });
+    }).catch((err)=>{
+      res.json({ status: 'error', message: err });
+    })
+  }
+
+  const removeCart=(req,res)=>{
+    const proId=req.params.id
+    const userId=req.user._id
+    userUtilities.removeCart(proId,userId).then((details)=>{
+      res.json({ status: 'ok', products: details });
+    }).catch((err)=>{
+      res.json({ status: 'error', message: err });
+    })
+  }
+
+
+  const getCart = (req, res) => {
+    const userId=req.user._id
+    userUtilities
+      .getCart(userId)
+      .then((details) => {
+        res.json({ status: 'ok', cartProducts: details });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   module.exports={
     userSignup,
     userLogin,
     addProduct,
     getAllProducts,
+    addToCart,
+    getCart,
+    removeCart,
   }
