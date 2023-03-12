@@ -5,7 +5,6 @@
 - [Demo](#demo)
 - [Run](#run)
 - [Technology](#technology)
-- [Features](#features)
 
 
 ## Introduction
