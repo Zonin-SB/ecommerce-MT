@@ -1,4 +1,4 @@
-# ecommerce-MT﻿# timezone.ml
+# ecommerce-MT
 ## Table of contents
 
 - [Introduction](#introduction)
