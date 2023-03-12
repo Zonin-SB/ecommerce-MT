@@ -19,11 +19,15 @@ NOTE: Please read the RUN section before opening an issue.
 
 This is a simple ecommerce website, you can add products to your cart and remove products from your cart,the stock of product changes with respect to the adding and removing of product to cart.
 
-
-
-
-
 In order to add product  access the page on "/addProduct".
+
+
+https://user-images.githubusercontent.com/109497938/224537037-0d08f280-df51-412f-8366-0e45ed6aab35.mp4
+
+
+
+
+
 
 ## Run
 
