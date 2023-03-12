@@ -34,7 +34,7 @@ function Cart() {
       Swal.fire({
         icon: "error",
         title: "Oops...",
-        text: "This product is out of stock.!",
+        text: "This product is currently out of stock..!",
       });
     } else if (data.status === "ok") {
       setCart(data.cartProducts);
