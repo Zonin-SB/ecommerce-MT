@@ -4,7 +4,7 @@ import { AddProduct, Navbar } from "../Components";
 function AddProductPage() {
   return (
     <div>
-      <Navbar/>
+      <Navbar />
       <AddProduct />
     </div>
   );

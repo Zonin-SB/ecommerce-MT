@@ -1,36 +1,35 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useFormik } from 'formik';
-import {signupSchema} from '../../validation/validation'
-import {userSignup} from '../../axios/services/userServices'
+import { useFormik } from "formik";
+import { signupSchema } from "../../validation/validation";
+import { userSignup } from "../../axios/services/userServices";
 import FormComponent from "../FormComponent/FormComponent";
 
 const initialValues = {
-  name: '',
-  email: '',
-  password: '',
-  confirmPassword: '',
+  name: "",
+  email: "",
+  password: "",
+  confirmPassword: "",
 };
 function Signup() {
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const onSubmit = async (values, action) => {
     const response = await userSignup(values);
-    console.log(response);
-    if (response.status === 'error') {
-      setError('This email already exists,try another one.');
-    } else if (response.status === 'success') {
-      navigate('/login');
+    if (response.status === "error") {
+      setError("This email already exists,try another one.");
+    } else if (response.status === "success") {
+      navigate("/login");
     }
   };
 
   const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
-  useFormik({
-    initialValues: initialValues,
-    validationSchema: signupSchema,
-    onSubmit,
-  });
+    useFormik({
+      initialValues: initialValues,
+      validationSchema: signupSchema,
+      onSubmit,
+    });
   return (
     <div>
       <FormComponent>
@@ -47,13 +46,13 @@ function Signup() {
               id="name"
               name="name"
               value={values.name}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
+              onChange={handleChange}
+              onBlur={handleBlur}
               placeholder="Username"
             />
-             {errors.name && touched.name && (
-                      <p style={{ color: 'red' }}>{errors.name}</p>
-                    )}
+            {errors.name && touched.name && (
+              <p style={{ color: "red" }}>{errors.name}</p>
+            )}
           </div>
           <div className="form-group">
             <input
@@ -67,8 +66,8 @@ function Signup() {
               placeholder="Email"
             />
             {errors.email && touched.email && (
-                      <p style={{ color: 'red' }}>{errors.email}</p>
-                    )}
+              <p style={{ color: "red" }}>{errors.email}</p>
+            )}
           </div>
           <div className="form-group">
             <input
@@ -81,11 +80,11 @@ function Signup() {
               name="password"
               placeholder="Password"
             />
-           {errors.password && touched.password && (
-                      <p style={{ color: 'red' }}>{errors.password}</p>
-                    )}
+            {errors.password && touched.password && (
+              <p style={{ color: "red" }}>{errors.password}</p>
+            )}
           </div>
-          
+
           <div className="form-group">
             <input
               type="password"
@@ -97,17 +96,17 @@ function Signup() {
               onBlur={handleBlur}
               placeholder="Confirm Password"
             />
-             {errors.confirmPassword && touched.confirmPassword && (
-                      <p style={{ color: 'red' }}>{errors.confirmPassword}</p>
-                    )}
+            {errors.confirmPassword && touched.confirmPassword && (
+              <p style={{ color: "red" }}>{errors.confirmPassword}</p>
+            )}
           </div>
           {error ? (
-                      <p style={{ color: 'red' }} className="text-center">
-                        {error}
-                      </p>
-                    ) : (
-                      ''
-                    )}
+            <p style={{ color: "red" }} className="text-center">
+              {error}
+            </p>
+          ) : (
+            ""
+          )}
           <div className="form-group">
             <div class="d-grid gap-2 col-6 mx-auto">
               <button type="submit" className="btn btn-block create-account">

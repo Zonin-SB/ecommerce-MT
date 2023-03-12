@@ -5,12 +5,12 @@ import { useFormik } from "formik";
 import FormComponent from "../FormComponent/FormComponent";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import Swal from 'sweetalert2';
+import Swal from "sweetalert2";
 
 const initialValues = {
   name: "",
   price: "",
-  stock:''
+  stock: "",
 };
 function AddProduct() {
   const [error, setError] = useState("");
@@ -20,14 +20,12 @@ function AddProduct() {
   const onFileChange = (event) => {
     setSelectedFile(event.target.files[0]);
   };
-  // console.log(selectedFile);
-  const onSubmit = async (values,{ resetForm }) => {
+  const onSubmit = async (values, { resetForm }) => {
     try {
       let value = {};
       const formData = new FormData();
       formData.append("file", selectedFile);
       formData.append("upload_preset", "care4pets");
-      console.log(formData, "formdata");
 
       const up = await axios.post(
         "https://api.cloudinary.com/v1_1/dtfvivsz5/image/upload/",
@@ -39,26 +37,26 @@ function AddProduct() {
       const imagedata = up.data.url;
       value.name = values.name;
       value.price = values.price;
-      value.stock=values.stock
+      value.stock = values.stock;
       value.imageUrl = imagedata;
       const response = await addProduct(value);
       if (response.status === "error") {
         Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
-          text: 'Something went wrong!',
+          icon: "error",
+          title: "Oops...",
+          text: "Something went wrong!",
         });
         setError("Action Failed,Please try again after some time.");
       } else if (response.status === "ok") {
         resetForm();
-        setSelectedFile(null)
+        setSelectedFile(null);
         Swal.fire({
-          icon: 'success',
-          title: 'New plan has been added',
+          icon: "success",
+          title: "New product has been added",
           showConfirmButton: false,
           timer: 1500,
         });
-        
+
         navigate("/addProduct");
       }
     } catch (error) {
@@ -72,7 +70,6 @@ function AddProduct() {
       validationSchema: addProductSchema,
       onSubmit,
     });
-  // console.log(values,'form val');
   return (
     <div>
       <FormComponent>
@@ -141,7 +138,6 @@ function AddProduct() {
               className="form-control item"
               id="image"
               required
-              
             />
           </div>
 

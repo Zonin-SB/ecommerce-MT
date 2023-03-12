@@ -12,18 +12,6 @@ select.form-control {
 .fa-trash{
     cursor: pointer;
 }
-.form-control {
-    padding: 0 18px 3px;
-    border: 1px solid #dbe2e8;
-    border-radius: 22px;
-    background-color: #fff;
-    color: #606975;
-    font-family: "Maven Pro",Helvetica,Arial,sans-serif;
-    font-size: 14px;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-}
 
 .shopping-cart,
 .wishlist-table,

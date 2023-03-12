@@ -26,7 +26,6 @@ function Cart() {
       setCart(data.cartProducts);
     }
   }, []);
-  //   console.log(cart,'cart');
   const addQuantity = async (id) => {
     const token = localStorage.getItem("userToken");
     const data = await addCartCount(token, id);
@@ -47,25 +46,23 @@ function Cart() {
     setCart(data.cartProducts);
   };
 
-  const remove=(id)=>{
+  const remove = (id) => {
     Swal.fire({
-        title: "Are you sure?",
-        text: "You want to remove this product!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes!",
-      }).then(async(result) => {
-        if (result.isConfirmed) {
-            const token = localStorage.getItem("userToken");
-            const data=await removeProduct(token,id)
-            setCart(data.cartProducts);
-        }
-      });
-    
-  }
-
+      title: "Are you sure?",
+      text: "You want to remove this product!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const token = localStorage.getItem("userToken");
+        const data = await removeProduct(token, id);
+        setCart(data.cartProducts);
+      }
+    });
+  };
 
   const cartLength = cart?.length;
   dispatch(cartCount(cartLength));
@@ -90,9 +87,7 @@ function Cart() {
                 <th>Product Name</th>
                 <th className="text-center">Quantity</th>
                 <th className="text-center">Subtotal</th>
-                <th className="text-center">
-                  <p className="btn btn-sm btn-outline-danger">Clear Cart</p>
-                </th>
+                <th className="text-center">Remove</th>
               </tr>
             </thead>
             <tbody>

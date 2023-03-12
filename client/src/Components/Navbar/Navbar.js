@@ -4,11 +4,12 @@ import { BsBasket } from "react-icons/bs";
 import { AiOutlineHeart } from "react-icons/ai";
 import { BsSearch } from "react-icons/bs";
 import { AiOutlineLogout } from "react-icons/ai";
-import "./Navbar.css";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { cartCount, userLoginDetails } from "../../redux/userReducer";
 import Swal from "sweetalert2";
+import logo from "../../images/mt-logo.png";
+import "./Navbar.css";
 
 function Navbar() {
   const navigate = useNavigate();
@@ -16,14 +17,14 @@ function Navbar() {
   const user = useSelector((state) => state.user.userDetails);
   const count = useSelector((state) => state.user.cart);
 
-  const cartView=()=>{
-    const token=localStorage.getItem('userToken')
-    if(token){
-      navigate('/cart')
-    }else{
-      navigate('/login')
+  const cartView = () => {
+    const token = localStorage.getItem("userToken");
+    if (token) {
+      navigate("/cart");
+    } else {
+      navigate("/login");
     }
-  }
+  };
 
   const logout = () => {
     Swal.fire({
@@ -37,7 +38,6 @@ function Navbar() {
     }).then((result) => {
       if (result.isConfirmed) {
         localStorage.removeItem("userToken");
-
         dispatch(userLoginDetails(null));
         dispatch(cartCount(null));
         navigate("/");
@@ -51,7 +51,13 @@ function Navbar() {
       <nav className="navbar navbar-expand-lg navbar-light bg-white ">
         <div className="container-fluid">
           <Link to={"/"}>
-            <p className="navbar-brand font-weight-bold">logoipsum</p>
+            <p className="navbar-brand font-weight-bold fs-3">
+              <span>
+                {" "}
+                <img src={logo} alt="logo" style={{ width: "40px" }} />
+              </span>
+              logoipsum
+            </p>
           </Link>
           <button
             className="navbar-toggler"
@@ -79,23 +85,6 @@ function Navbar() {
                   >
                     classifieds
                   </button>
-                  <ul className="dropdown-menu">
-                    <li>
-                      <p className="dropdown-item" href="#">
-                        Action
-                      </p>
-                    </li>
-                    <li>
-                      <p className="dropdown-item" href="#">
-                        Another action
-                      </p>
-                    </li>
-                    <li>
-                      <p className="dropdown-item" href="#">
-                        Something else here
-                      </p>
-                    </li>
-                  </ul>
                 </div>
               </li>
 
@@ -115,8 +104,13 @@ function Navbar() {
               <AiOutlineHeart size={24} />
             </div>
 
-           <div className="p-2">
-              <BsBasket size={24} style={{ color: "black" }} onClick={()=>cartView()} className="icon-pointer"/>
+            <div className="p-2">
+              <BsBasket
+                size={24}
+                style={{ color: "black" }}
+                onClick={() => cartView()}
+                className="icon-pointer"
+              />
               {count > 0 && (
                 <span class="start-100 translate-middle badge rounded-pill bg-danger">
                   {count}

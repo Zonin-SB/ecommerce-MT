@@ -37,5 +37,5 @@ export const addProductSchema = Yup.object({
     .max(40)
     .required("This field is required"),
   price: Yup.number().positive().integer().required("This field is required"),
-  stock:Yup.number().positive().integer().required("This field is required"),
+  stock: Yup.number().positive().integer().required("This field is required"),
 });

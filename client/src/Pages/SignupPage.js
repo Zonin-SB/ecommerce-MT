@@ -4,7 +4,7 @@ import { Navbar, Signup } from "../Components";
 function SignupPage() {
   return (
     <div>
-      <Navbar/>
+      <Navbar />
       <Signup />
     </div>
   );

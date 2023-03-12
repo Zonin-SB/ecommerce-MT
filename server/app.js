@@ -1,10 +1,10 @@
-const express = require('express');
-const http = require('http');
-const cors = require('cors');
-const db = require('./config/connection');
-const bodyParser = require('body-parser');
-const dotenv = require('dotenv');
-const { errorHandler } = require('./middlewares/error');
+const express = require("express");
+const http = require("http");
+const cors = require("cors");
+const db = require("./config/connection");
+const bodyParser = require("body-parser");
+const dotenv = require("dotenv");
+const { errorHandler } = require("./middlewares/error");
 dotenv.config();
 
 const app = express();
@@ -13,21 +13,18 @@ app.use(cors());
 app.use(express.json());
 app.use(errorHandler);
 
+const userRouter = require("./routes/user");
 
-const userRouter=require('./routes/user')
-
-
-app.use('/api',userRouter)
-
+app.use("/api", userRouter);
 
 // server
 const server = http.createServer(app);
 
 db.connect((err) => {
-    if (err) console.log('Connection Error' + err);
-    else console.log('Database Connected to port 27017');
-  });
+  if (err) console.log("Connection Error" + err);
+  else console.log("Database Connected to port 27017");
+});
 
 server.listen(3001, () => {
-    console.log('Server started on 3001');
-  });
+  console.log("Server started on 3001");
+});

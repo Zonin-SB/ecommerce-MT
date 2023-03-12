@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-import ProtectorRoutes from './ProtectorRoutes/ProtectorRoutes'
+import ProtectorRoutes from "./ProtectorRoutes/ProtectorRoutes";
 import {
   AddProductPage,
   CartPage,
@@ -15,9 +15,9 @@ function App() {
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/addProduct" element={<AddProductPage />} />
-        
-        <Route element={<ProtectorRoutes/>}>
-        <Route path="/cart" element={<CartPage />} />
+
+        <Route element={<ProtectorRoutes />}>
+          <Route path="/cart" element={<CartPage />} />
         </Route>
       </Routes>
     </div>

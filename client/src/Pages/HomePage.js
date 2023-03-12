@@ -1,6 +1,11 @@
-import React  from 'react';
+import React from "react";
 
-import { HomeComponent1, HomeComponent2, Navbar } from "../Components";
+import {
+  HomeComponent1,
+  HomeComponent2,
+  HomeComponent3,
+  Navbar,
+} from "../Components";
 
 function HomePage() {
   return (
@@ -8,6 +13,7 @@ function HomePage() {
       <Navbar />
       <HomeComponent1 />
       <HomeComponent2 />
+      <HomeComponent3 />
     </div>
   );
 }

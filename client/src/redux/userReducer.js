@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const INITIAL_STATE = {
   userDetails: null,
-  cart:null,
+  cart: null,
 };
 
 const loginSlice = createSlice({
@@ -22,6 +22,6 @@ const loginSlice = createSlice({
   },
 });
 
-export const { userLoginDetails,cartCount } = loginSlice.actions;
+export const { userLoginDetails, cartCount } = loginSlice.actions;
 
 export default loginSlice.reducer;

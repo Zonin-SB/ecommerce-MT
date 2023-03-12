@@ -1,20 +1,18 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useFormik } from 'formik';
-import jwt from 'jwt-decode';
-import {loginSchema} from '../../validation/validation'
-import {userLogin} from '../../axios/services/userServices'
+import { useFormik } from "formik";
+import { loginSchema } from "../../validation/validation";
+import { userLogin } from "../../axios/services/userServices";
 import FormComponent from "../FormComponent/FormComponent";
-import { useDispatch } from 'react-redux';
-import {userLoginDetails} from '../../redux/userReducer'
-
+import { useDispatch } from "react-redux";
+import { userLoginDetails } from "../../redux/userReducer";
 
 const initialValues = {
-  email: '',
-  password: '',
+  email: "",
+  password: "",
 };
 function Login() {
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -22,20 +20,20 @@ function Login() {
     const response = await userLogin(values);
 
     if (response.user) {
-      localStorage.setItem('userToken', response.user);
+      localStorage.setItem("userToken", response.user);
       dispatch(userLoginDetails(response.user));
-      navigate('/');
+      navigate("/");
     } else {
-      setError('Incorrect email or password');
+      setError("Incorrect email or password");
     }
   };
 
   const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
-  useFormik({
-    initialValues,
-    validationSchema: loginSchema,
-    onSubmit,
-  });
+    useFormik({
+      initialValues,
+      validationSchema: loginSchema,
+      onSubmit,
+    });
   return (
     <div>
       <FormComponent>
@@ -46,12 +44,12 @@ function Login() {
             </span>
           </div>
           {error ? (
-                      <p style={{ color: 'red' }} className="text-center">
-                        {error}
-                      </p>
-                    ) : (
-                      ''
-                    )}
+            <p style={{ color: "red" }} className="text-center">
+              {error}
+            </p>
+          ) : (
+            ""
+          )}
           <div className="form-group">
             <input
               type="email"
@@ -59,13 +57,13 @@ function Login() {
               id="email"
               name="email"
               value={values.email}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
+              onChange={handleChange}
+              onBlur={handleBlur}
               placeholder="Email"
             />
-             {errors.email && touched.email && (
-                      <p style={{ color: 'red' }}>{errors.email}</p>
-                    )}
+            {errors.email && touched.email && (
+              <p style={{ color: "red" }}>{errors.email}</p>
+            )}
           </div>
           <div className="form-group">
             <input
@@ -78,9 +76,9 @@ function Login() {
               id="password"
               placeholder="Password"
             />
-              {errors.password && touched.password && (
-                      <p style={{ color: 'red' }}>{errors.password}</p>
-                    )}
+            {errors.password && touched.password && (
+              <p style={{ color: "red" }}>{errors.password}</p>
+            )}
           </div>
 
           <div className="form-group">
