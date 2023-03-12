@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import "./Cart.css";
 import { AiOutlinePlus } from "react-icons/ai";
 import { AiOutlineMinus } from "react-icons/ai";
 import {
@@ -12,6 +11,8 @@ import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import { useDispatch } from "react-redux";
 import { cartCount } from "../../redux/userReducer";
+import emptyCart from "../../images/emptyCart.png";
+import "./Cart.css";
 
 function Cart() {
   const [cart, setCart] = useState([]);
@@ -80,89 +81,113 @@ function Cart() {
           style={{ marginBottom: 30 }}
         ></div>
         {/* Shopping Cart*/}
-        <div className="table-responsive shopping-cart">
-          <table className="table">
-            <thead>
-              <tr>
-                <th>Product Name</th>
-                <th className="text-center">Quantity</th>
-                <th className="text-center">Subtotal</th>
-                <th className="text-center">Remove</th>
-              </tr>
-            </thead>
-            <tbody>
-              {cart
-                ? cart.map((data, index) => {
-                    return (
-                      <tr key={index}>
-                        <td>
-                          <div className="product-item">
-                            <p className="product-thumb">
-                              <img
-                                src={data?.product?.imageUrl}
-                                alt="Product"
+
+        {cartLength > 0 ? (
+          <div className="table-responsive shopping-cart">
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>Product Name</th>
+                  <th className="text-center">Quantity</th>
+                  <th className="text-center">Subtotal</th>
+                  <th className="text-center">Remove</th>
+                </tr>
+              </thead>
+              <tbody>
+                {cart
+                  ? cart.map((data, index) => {
+                      return (
+                        <tr key={index}>
+                          <td>
+                            <div className="product-item">
+                              <p className="product-thumb">
+                                <img
+                                  src={data?.product?.imageUrl}
+                                  alt="Product"
+                                />
+                              </p>
+                              <div className="product-info">
+                                <h4 className="product-title">
+                                  <p>{data?.product?.name}</p>
+                                </h4>
+                              </div>
+                            </div>
+                          </td>
+                          <td className="text-center">
+                            <div className="d-flex flex-row justify-content-between align-items-center p-2 bg-white mt-4 px-3 rounded">
+                              <div className="d-flex flex-row align-items-center qty">
+                                <Link>
+                                  {" "}
+                                  <div style={{ padding: "10px" }}>
+                                    <AiOutlineMinus
+                                      size={20}
+                                      onClick={() =>
+                                        removeQuantity(data?.product?._id)
+                                      }
+                                    />
+                                  </div>
+                                </Link>
+                                <h5 className="text-grey mt-1 mr-1 ml-1 text-center">
+                                  {data?.quantity}
+                                </h5>
+                                <Link>
+                                  <div style={{ padding: "10px" }}>
+                                    <AiOutlinePlus
+                                      size={20}
+                                      onClick={() =>
+                                        addQuantity(data?.product?._id)
+                                      }
+                                    />
+                                  </div>
+                                </Link>
+                              </div>
+                            </div>
+                          </td>
+                          <td className="text-center text-lg text-medium">
+                            ₹{data?.quantity * data?.product?.price}
+                          </td>
+                          <td className="text-center">
+                            <p
+                              className="remove-from-cart "
+                              data-toggle="tooltip"
+                              title=""
+                              data-original-title="Remove item"
+                            >
+                              <i
+                                className="fa fa-trash"
+                                onClick={() => remove(data?.product?._id)}
                               />
                             </p>
-                            <div className="product-info">
-                              <h4 className="product-title">
-                                <p>{data?.product?.name}</p>
-                              </h4>
-                            </div>
-                          </div>
-                        </td>
-                        <td className="text-center">
-                          <div className="d-flex flex-row justify-content-between align-items-center p-2 bg-white mt-4 px-3 rounded">
-                            <div className="d-flex flex-row align-items-center qty">
-                              <Link>
-                                {" "}
-                                <div style={{ padding: "10px" }}>
-                                  <AiOutlineMinus
-                                    size={20}
-                                    onClick={() =>
-                                      removeQuantity(data?.product?._id)
-                                    }
-                                  />
-                                </div>
-                              </Link>
-                              <h5 className="text-grey mt-1 mr-1 ml-1 text-center">
-                                {data?.quantity}
-                              </h5>
-                              <Link>
-                                <div style={{ padding: "10px" }}>
-                                  <AiOutlinePlus
-                                    size={20}
-                                    onClick={() =>
-                                      addQuantity(data?.product?._id)
-                                    }
-                                  />
-                                </div>
-                              </Link>
-                            </div>
-                          </div>
-                        </td>
-                        <td className="text-center text-lg text-medium">
-                          ₹{data?.quantity * data?.product?.price}
-                        </td>
-                        <td className="text-center">
-                          <p
-                            className="remove-from-cart "
-                            data-toggle="tooltip"
-                            title=""
-                            data-original-title="Remove item"
-                          >
-                            <i
-                              className="fa fa-trash"
-                              onClick={() => remove(data?.product?._id)}
-                            />
-                          </p>
-                        </td>
-                      </tr>
-                    );
-                  })
-                : ""}
-            </tbody>
-          </table>
-        </div>
+                          </td>
+                        </tr>
+                      );
+                    })
+                  : ""}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <div className="d-flex align-items-center justify-content-center vh-100">
+            <div className="text-center">
+              <img
+                src={emptyCart}
+                alt="cart is empty"
+                style={{ width: "200px" }}
+              />
+              <p className="fs-3">
+                {" "}
+                <span className="text-danger">Opps!</span> Your cart is empty.
+              </p>
+              <p className="lead">Start shopping now?</p>
+              <Link to={"/"}>
+                <p href="index.html" className="btn btn-primary">
+                  Go Home
+                </p>
+              </Link>
+            </div>
+          </div>
+        )}
+
         <div className="shopping-cart-footer">
           <div className="column"></div>
         </div>

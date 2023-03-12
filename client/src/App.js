@@ -3,6 +3,7 @@ import ProtectorRoutes from "./ProtectorRoutes/ProtectorRoutes";
 import {
   AddProductPage,
   CartPage,
+  ErrorPage,
   HomePage,
   LoginPage,
   SignupPage,
@@ -15,6 +16,7 @@ function App() {
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/addProduct" element={<AddProductPage />} />
+        <Route path="*" element={<ErrorPage />} />
 
         <Route element={<ProtectorRoutes />}>
           <Route path="/cart" element={<CartPage />} />
